@@ -2,7 +2,7 @@ import matplotlib
 import numpy as np
 import utils
 import random
-import copy
+from copy import deepcopy
 
 class CellGrid:
     def __init__(self, rows, cols, edge_mode="dead"):
@@ -34,7 +34,7 @@ class CellGrid:
 
 
     def nextGeneration(self):
-        oldGrid = copy.deepcopy(self.grid)
+        oldGrid = deepcopy(self.grid)
         for row in range(self.rows):
             for col in range(self.cols):
                 neighbor_count = self.countNeighbors(oldGrid, row, col)
