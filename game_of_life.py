@@ -1,7 +1,6 @@
 import matplotlib
 import numpy as np
 import utils
-import random
 from copy import deepcopy
 
 class CellGrid:
@@ -9,7 +8,7 @@ class CellGrid:
         self.edge_mode = edge_mode
         self.rows = rows
         self.cols = cols
-        self.grid = [[random.randint(0, 1) for _ in range(cols)] for _ in range(rows)] #makes 0s grid
+        self.grid = [[0 for _ in range(cols)] for _ in range(rows)] #makes 0s grid
         self.rules = utils.loadRules()
 
     def countNeighbors(self, grid, row, col): # edge_mode is used to handle cells outside grid
