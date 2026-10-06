@@ -1,16 +1,21 @@
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-import numpy as np
 
 class DisplayGrid:
+    """Class to handle the display of cell grid using matplotlib."""
     def __init__(self, grid):
+        """Initialize the DisplayGrid with a grid and set up the matplotlib figure and axes."""
         self.grid = grid
         self.fig, self.ax = plt.subplots()
         self.color_map = mpl.colors.ListedColormap(['black', 'white'])  # Black for dead cells, white for alive cells
         self.im = None
         plt.ion()  # Turn on interactive mode
+        self.fig.canvas.mpl_connect('key_press_event', self.on_press) # Connect key press event to the on_press method
+        self.fig.canvas.mpl_connect('button_press_event', self.on_click) # Connect mouse click event to the on_click method
+        self.is_running = True  # Flag to control the main loop
 
     def display(self):
+        """Create a visual representation of the grid using matplotlib."""
         self.im = self.ax.imshow(self.grid, cmap=self.color_map, 
                                  interpolation='nearest', vmin=0, vmax=1)
         plt.xticks([])  # Remove x-axis ticks
@@ -19,10 +24,64 @@ class DisplayGrid:
         plt.pause(0.1)  # Pause to allow the plot to render
 
     def update_display(self, new_grid):
+        """Update the display with a new grid state."""
         self.grid = new_grid
         self.im.set_data(self.grid)
         plt.draw()
         plt.pause(0.5)
+
+
+    def on_press(self, event):
+        """Handle key press events to control the simulation."""
+        if event.key == ' ':
+            self.is_running = not self.is_running  # Toggle the running state
+        elif event.key == 'q':
+            self.is_running = False  # Stop the main loop
+            plt.close(self.fig)  # Close the figure window
+
+    def on_click(self, event):
+        """Handle mouse click events to toggle cell states."""
+        if not self.is_running:
+            if event.inaxes is not None:
+                x, y = round(event.xdata), round(event.ydata)
+                if 0 <= x < len(self.grid[0]) and 0 <= y < len(self.grid):
+                    self.grid[y][x] = not self.grid[y][x]  # Toggle cell state
+                    self.update_display(self.grid)  # Update the display with the new grid state
+
+    def control_main_loop(self, grid, next_generation, delay=0.1):
+        """Control the main loop of the simulation, allowing for updates and user interaction."""
+        plt.ion()
+        self.display()
+
+        while plt.fignum_exists(self.fig.number):
+            if self.is_running:
+                grid = next_generation(grid)
+                self.update_display(grid)
+            
+            plt.pause(delay)
+
+    def next_generation(self, grid):
+        """Example next generation function that toggles specific cells in the grid."""
+        grid[0][0] = not grid[0][0]  # Toggle the state of the cell at (0, 0)
+        grid[1][1] = not grid[1][1]  # Toggle the state of the cell at (1, 1)
+        grid[2][2] = not grid[2][2]  # Toggle the state of the cell at (2, 2)
+        grid[3][3] = not grid[3][3]  # Toggle the state of the cell at (3, 3)
+        grid[4][4] = not grid[4][4]  # Toggle the state of the cell at (4, 4)
+        grid[5][5] = not grid[5][5]  # Toggle the state of the cell at (5, 5)
+        grid[6][6] = not grid[6][6]  # Toggle the state of the cell at (6, 6)
+        grid[7][7] = not grid[7][7]  # Toggle the state of the cell at (7, 7)
+        grid[7][0] = not grid[7][0]  # Toggle the state of the cell at (7, 0)
+        grid[6][1] = not grid[6][1]  # Toggle the state of the cell at (6, 1)
+        grid[5][2] = not grid[5][2]  # Toggle the state of the cell at (5, 2)
+        grid[4][3] = not grid[4][3]  # Toggle the state of the cell at (4, 3)
+        grid[3][4] = not grid[3][4]  # Toggle the state of the cell at (3, 4)
+        grid[2][5] = not grid[2][5]  # Toggle the state of the cell at (2, 5)
+        grid[1][6] = not grid[1][6]  # Toggle the state of the cell at (1, 6)
+        grid[0][7] = not grid[0][7]  # Toggle the state of the cell at (0, 7)
+        return grid  # Return the updated grid
+
+
+
 
 if __name__ == "__main__":
     # Example usage
@@ -30,43 +89,4 @@ if __name__ == "__main__":
     grid = [[0 for _ in range(cols)] for _ in range(rows)]  
     display = DisplayGrid(grid)
     display.display()
-    while plt.fignum_exists(display.fig.number):  # Keep updating as long as the figure window is open
-        grid[0][0] = 1
-        grid[1][1] = 1 
-        grid[2][2] = 1
-        grid[3][3] = 1
-        grid[4][4] = 1
-        grid[5][5] = 1
-        grid[6][6] = 1
-        grid[7][7] = 1
-        grid[7][0] = 1
-        grid[6][1] = 1
-        grid[5][2] = 1
-        grid[4][3] = 1
-        grid[3][4] = 1
-        grid[2][5] = 1
-        grid[1][6] = 1
-        grid[0][7] = 1
-        if not plt.fignum_exists(display.fig.number):
-            break
-        display.update_display(grid)
-        grid[0][0] = 0
-        grid[1][1] = 0 
-        grid[2][2] = 0
-        grid[3][3] = 0
-        grid[4][4] = 0
-        grid[5][5] = 0
-        grid[6][6] = 0
-        grid[7][7] = 0
-        grid[7][0] = 0
-        grid[6][1] = 0
-        grid[5][2] = 0
-        grid[4][3] = 0
-        grid[3][4] = 0
-        grid[2][5] = 0
-        grid[1][6] = 0
-        grid[0][7] = 0
-        if not plt.fignum_exists(display.fig.number):
-            break
-        display.update_display(grid)
-    plt.ioff()
+    display.control_main_loop(grid, display.next_generation, delay=0.5)

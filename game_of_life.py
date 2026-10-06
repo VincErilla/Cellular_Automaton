@@ -1,5 +1,6 @@
 import matplotlib
 import numpy as np
+from display_grid import DisplayGrid
 
 
 rows = 8
