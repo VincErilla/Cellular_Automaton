@@ -48,7 +48,10 @@ def printGrid(grid):
 
 
 def main():
-    printGrid(grid)
+    grid = CellGrid(8, 9)
+    grid.printGrid()
+    grid.nextGeneration()
+    grid.printGrid()
 
 if __name__ == "__main__":
     main()
