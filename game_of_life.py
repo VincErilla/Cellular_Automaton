@@ -33,10 +33,10 @@ class CellGrid:
 
 
     def nextGeneration(self):
-        oldGrid = deepcopy(self.grid)
+        oldGrid = deepcopy(self.grid) # makes a copy of the grid
         for row in range(self.rows):
             for col in range(self.cols):
-                neighbor_count = self.countNeighbors(oldGrid, row, col)
+                neighbor_count = self.countNeighbors(oldGrid, row, col) # references the copy to update the original
                 if neighbor_count in self.rules["birth"]:
                     self.grid[row][col] = 1
                 elif oldGrid[row][col] == 1 and neighbor_count in self.rules["survive"]:
@@ -44,7 +44,7 @@ class CellGrid:
                 else:
                     self.grid[row][col] = 0
 
-        del oldGrid
+        del oldGrid # yippee we love not having memory leaks
 
     def printGrid(self):
         print("-" * (len(self.grid[0]) * 2 + 1)) # prints a top border
