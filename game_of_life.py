@@ -45,7 +45,6 @@ class CellGrid:
                     self.grid[row][col] = 0
                     
         del oldGrid # yippee we love not having memory leaks
-        return self.grid # return new grid for display purposes
 
     def printGrid(self):
         print("-" * (len(self.grid[0]) * 2 + 1)) # prints a top border
@@ -69,8 +68,8 @@ def main():
     #grid.nextGeneration()
     #grid.printGrid()
 
-    display = DisplayGrid(grid.grid)
-    display.control_main_loop(grid=grid.grid, next_generation=grid.nextGeneration, delay=0.5)
+    display = DisplayGrid(grid)
+    display.control_main_loop(delay=0.5)
 
 if __name__ == "__main__":
     main()

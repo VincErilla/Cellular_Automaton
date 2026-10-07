@@ -15,4 +15,4 @@ def loadState() -> list:
 def saveState(grid: list) -> None:
     data = {"grid": grid}
     with open('state.json', 'w') as f:
-        json.dump(f, data)
+        json.dump(data, f)

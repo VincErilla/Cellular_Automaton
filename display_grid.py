@@ -10,25 +10,24 @@ class DisplayGrid:
         self.color_map = mpl.colors.ListedColormap(['black', 'white'])  # Black for dead cells, white for alive cells
         self.im = None
         plt.ion()  # Turn on interactive mode
+        self.fig.canvas.mpl_disconnect(self.fig.canvas.manager.key_press_handler_id)
         self.fig.canvas.mpl_connect('key_press_event', self.on_press) # Connect key press event to the on_press method
         self.fig.canvas.mpl_connect('button_press_event', self.on_click) # Connect mouse click event to the on_click method
-        self.is_running = True  # Flag to control the main loop
+        self.is_running = False  # Flag to control the main loop
 
     def display(self):
         """Create a visual representation of the grid using matplotlib."""
-        self.im = self.ax.imshow(self.grid, cmap=self.color_map, 
+        self.im = self.ax.imshow(self.grid.grid, cmap=self.color_map, 
                                  interpolation='nearest', vmin=0, vmax=1)
         plt.xticks([])  # Remove x-axis ticks
         plt.yticks([])  # Remove y-axis ticks
         plt.show(block=False)  # Non-blocking show to allow updates
         plt.pause(0.1)  # Pause to allow the plot to render
 
-    def update_display(self, new_grid):
+    def update_display(self):
         """Update the display with a new grid state."""
-        self.grid = new_grid
-        self.im.set_data(self.grid)
+        self.im.set_data(self.grid.grid)
         plt.draw()
-        plt.pause(0.5)
 
 
     def on_press(self, event):
@@ -36,28 +35,31 @@ class DisplayGrid:
         if event.key == ' ':
             self.is_running = not self.is_running  # Toggle the running state
         elif event.key == 'q':
+            self.grid.save()
             self.is_running = False  # Stop the main loop
             plt.close(self.fig)  # Close the figure window
+        elif event.key == 'l':
+            self.grid.load()
+            self.update_display()
 
     def on_click(self, event):
         """Handle mouse click events to toggle cell states."""
         if not self.is_running:
             if event.inaxes is not None:
                 x, y = round(event.xdata), round(event.ydata)
-                if 0 <= x < len(self.grid[0]) and 0 <= y < len(self.grid):
-                    self.grid[y][x] = not self.grid[y][x]  # Toggle cell state
-                    self.update_display(self.grid)  # Update the display with the new grid state
+                if 0 <= x < len(self.grid.grid[0]) and 0 <= y < len(self.grid.grid):
+                    self.grid.grid[y][x] = not self.grid.grid[y][x]  # Toggle cell state
+                    self.update_display()  # Update the display with the new grid state
 
-    def control_main_loop(self, grid, next_generation, delay=0.1):
+    def control_main_loop(self, delay=0.1):
         """Control the main loop of the simulation, allowing for updates and user interaction."""
         plt.ion()
-        self.grid = grid
         self.display()
 
         while plt.fignum_exists(self.fig.number):
             if self.is_running:
-                self.grid = next_generation()
-                self.update_display(self.grid)
+                self.grid.nextGeneration()
+                self.update_display()
             
             plt.pause(delay)
 
