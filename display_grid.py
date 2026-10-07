@@ -20,6 +20,7 @@ class DisplayGrid:
                                  interpolation='nearest', vmin=0, vmax=1)
         plt.xticks([])  # Remove x-axis ticks
         plt.yticks([])  # Remove y-axis ticks
+        self.ax.set_title("Press space to pause, q to quit")
         plt.show(block=False)  # Non-blocking show to allow updates
         plt.pause(0.1)  # Pause to allow the plot to render
 
@@ -35,6 +36,10 @@ class DisplayGrid:
         """Handle key press events to control the simulation."""
         if event.key == ' ':
             self.is_running = not self.is_running  # Toggle the running state
+            if self.is_running:
+                self.ax.set_title("Press space to pause, q to quit")
+            else:
+                self.ax.set_title("Press space to resume, q to quit\nClick any cell to toggle its state")
         elif event.key == 'q':
             self.is_running = False  # Stop the main loop
             plt.close(self.fig)  # Close the figure window
@@ -56,29 +61,29 @@ class DisplayGrid:
 
         while plt.fignum_exists(self.fig.number):
             if self.is_running:
-                self.grid = next_generation()
-                self.update_display(self.grid)
+                self.grid = next_generation() # Get next generation
+                self.update_display(self.grid) # Update display w/ next generation
             
             plt.pause(delay)
 
     def next_generation(self, grid):
         """Example next generation function that toggles specific cells in the grid."""
-        grid[0][0] = not grid[0][0]  # Toggle the state of the cell at (0, 0)
-        grid[1][1] = not grid[1][1]  # Toggle the state of the cell at (1, 1)
-        grid[2][2] = not grid[2][2]  # Toggle the state of the cell at (2, 2)
-        grid[3][3] = not grid[3][3]  # Toggle the state of the cell at (3, 3)
-        grid[4][4] = not grid[4][4]  # Toggle the state of the cell at (4, 4)
-        grid[5][5] = not grid[5][5]  # Toggle the state of the cell at (5, 5)
-        grid[6][6] = not grid[6][6]  # Toggle the state of the cell at (6, 6)
-        grid[7][7] = not grid[7][7]  # Toggle the state of the cell at (7, 7)
-        grid[7][0] = not grid[7][0]  # Toggle the state of the cell at (7, 0)
-        grid[6][1] = not grid[6][1]  # Toggle the state of the cell at (6, 1)
-        grid[5][2] = not grid[5][2]  # Toggle the state of the cell at (5, 2)
-        grid[4][3] = not grid[4][3]  # Toggle the state of the cell at (4, 3)
-        grid[3][4] = not grid[3][4]  # Toggle the state of the cell at (3, 4)
-        grid[2][5] = not grid[2][5]  # Toggle the state of the cell at (2, 5)
-        grid[1][6] = not grid[1][6]  # Toggle the state of the cell at (1, 6)
-        grid[0][7] = not grid[0][7]  # Toggle the state of the cell at (0, 7)
+        grid[0][0] = not grid[0][0]
+        grid[1][1] = not grid[1][1]
+        grid[2][2] = not grid[2][2]
+        grid[3][3] = not grid[3][3]
+        grid[4][4] = not grid[4][4]
+        grid[5][5] = not grid[5][5]
+        grid[6][6] = not grid[6][6]
+        grid[7][7] = not grid[7][7]
+        grid[7][0] = not grid[7][0]
+        grid[6][1] = not grid[6][1]
+        grid[5][2] = not grid[5][2]
+        grid[4][3] = not grid[4][3]
+        grid[3][4] = not grid[3][4]
+        grid[2][5] = not grid[2][5]
+        grid[1][6] = not grid[1][6]
+        grid[0][7] = not grid[0][7]
         return grid  # Return the updated grid
 
 
