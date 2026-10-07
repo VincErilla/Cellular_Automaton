@@ -1,4 +1,5 @@
 {
     "birth": [3],
-    "survive": [2, 3]
+    "survive": [2, 3],
+    "radius": 1
 }
