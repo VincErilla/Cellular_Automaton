@@ -69,7 +69,7 @@ def main():
     #grid.printGrid()
 
     display = DisplayGrid(grid)
-    display.control_main_loop(delay=0.5)
+    display.control_main_loop(delay=0.1)
 
 if __name__ == "__main__":
     main()

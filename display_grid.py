@@ -40,12 +40,13 @@ class DisplayGrid:
             else:
                 self.ax.set_title("Press space to resume, q to quit\nClick any cell to toggle its state")
         elif event.key == 'q':
-            self.grid.save()
             self.is_running = False  # Stop the main loop
             plt.close(self.fig)  # Close the figure window
         elif event.key == 'l':
             self.grid.load()
             self.update_display()
+        elif eent.key == 's':
+            self.grid.save()
 
     def on_click(self, event):
         """Handle mouse click events to toggle cell states."""
