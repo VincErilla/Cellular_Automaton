@@ -1,4 +1,3 @@
-import matplotlib
 import numpy as np
 import utils
 from display_grid import DisplayGrid
@@ -56,6 +55,12 @@ class CellGrid:
             print(f"| {line} |")
 
         print("-" * (len(self.grid[0])* 2 + 1))
+
+    def save(self):
+        utils.saveState(self.grid)
+
+    def load(self):
+        self.grid = utils.loadState()
 
 
 def main():
