@@ -1,6 +1,7 @@
 import matplotlib
 import numpy as np
 import utils
+from display_grid import DisplayGrid
 from copy import deepcopy
 
 class CellGrid:
