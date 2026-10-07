@@ -45,7 +45,7 @@ class DisplayGrid:
         elif event.key == 'l':
             self.grid.load()
             self.update_display()
-        elif eent.key == 's':
+        elif event.key == 's':
             self.grid.save()
 
     def on_click(self, event):
