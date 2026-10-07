@@ -51,12 +51,13 @@ class DisplayGrid:
     def control_main_loop(self, grid, next_generation, delay=0.1):
         """Control the main loop of the simulation, allowing for updates and user interaction."""
         plt.ion()
+        self.grid = grid
         self.display()
 
         while plt.fignum_exists(self.fig.number):
             if self.is_running:
-                grid = next_generation(grid)
-                self.update_display(grid)
+                self.grid = next_generation()
+                self.update_display(self.grid)
             
             plt.pause(delay)
 
