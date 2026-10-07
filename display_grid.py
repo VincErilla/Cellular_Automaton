@@ -21,7 +21,7 @@ class DisplayGrid:
                                  interpolation='nearest', vmin=0, vmax=1)
         plt.xticks([])  # Remove x-axis ticks
         plt.yticks([])  # Remove y-axis ticks
-        self.ax.set_title("Press space to pause, q to quit")
+        self.ax.set_title("Press space to resume, q to quit, l to load\nClick any cell to toggle its state")
         plt.show(block=False)  # Non-blocking show to allow updates
         plt.pause(0.1)  # Pause to allow the plot to render
 
@@ -38,7 +38,7 @@ class DisplayGrid:
             if self.is_running:
                 self.ax.set_title("Press space to pause, q to quit")
             else:
-                self.ax.set_title("Press space to resume, q to quit\nClick any cell to toggle its state")
+                self.ax.set_title("Press space to resume, q to quit, l to load\nClick any cell to toggle its state")
         elif event.key == 'q':
             self.is_running = False  # Stop the main loop
             plt.close(self.fig)  # Close the figure window
@@ -89,13 +89,3 @@ class DisplayGrid:
         grid[0][7] = not grid[0][7]
         return grid  # Return the updated grid
 
-
-
-
-if __name__ == "__main__":
-    # Example usage
-    rows, cols = 8, 8
-    grid = [[0 for _ in range(cols)] for _ in range(rows)]  
-    display = DisplayGrid(grid)
-    display.display()
-    display.control_main_loop(grid, display.next_generation, delay=0.5)
