@@ -45,8 +45,10 @@ class DisplayGrid:
         elif event.key == 'l':
             self.grid.load()
             self.update_display()
+            print("Grid Loaded!")
         elif event.key == 's':
             self.grid.save()
+            print("Grid saved!")
 
     def on_click(self, event):
         """Handle mouse click events to toggle cell states."""

@@ -59,11 +59,15 @@ class CellGrid:
         utils.saveState(self.grid)
 
     def load(self):
-        self.grid = utils.loadState()
+        newGrid = utils.loadState()
+        if len(newGrid) == len(self.grid) and len(newGrid[0]) == len(self.grid[0]):
+            self.grid = newGrid
+        else:
+            print(f"Error loading grid: Dimension Mismatch (Current grid is {len(self.grid)}x{len(self.grid[0])}, Saved grid is {len(newGrid)}x{len(newGrid[0])})")
 
 
 def main():
-    grid = CellGrid(8, 9)
+    grid = CellGrid(50, 50, edge_mode="wrap")
     #grid.printGrid()
     #grid.nextGeneration()
     #grid.printGrid()
