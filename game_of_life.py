@@ -10,13 +10,14 @@ class CellGrid:
         self.rows = self.rules["width"]
         self.cols = self.rules["height"]
         self.grid = [[0 for _ in range(self.cols)] for _ in range(self.rows)] #makes 0s grid
+        self.radius = self.rules["radius"]
 
 
     def countNeighbors(self, grid, row, col): # edge_mode is used to handle cells outside grid
         live_neighbors = 0
         # check surroundings of the cell
-        for d_row in [-1, 0, 1]: # values for row change (left, none, right)
-            for d_col in [-1, 0, 1]: # values for col change (up, none, down)
+        for d_row in range(-self.radius, self.radius + 1): # values for row change (left, none, right)
+            for d_col in range(-self.radius, self.radius + 1): # values for col change (up, none, down)
                 if d_row == 0 and d_col == 0:
                     continue
 
