@@ -60,13 +60,14 @@ class CellGrid:
     def save(self):
         utils.saveState(self.grid)
 
-    def load(self):
+    def load(self) -> bool:
         newGrid = utils.loadState()
         if len(newGrid) == len(self.grid) and len(newGrid[0]) == len(self.grid[0]):
             self.grid = newGrid
+            return True
         else:
             print(f"Error loading grid: Dimension Mismatch (Current grid is {len(self.grid)}x{len(self.grid[0])}, Saved grid is {len(newGrid)}x{len(newGrid[0])})")
-
+            return False
 
 def main():
     grid = CellGrid()

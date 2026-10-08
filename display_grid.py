@@ -43,9 +43,10 @@ class DisplayGrid:
             self.is_running = False  # Stop the main loop
             plt.close(self.fig)  # Close the figure window
         elif event.key == 'l':
-            self.grid.load()
+            success = self.grid.load()
             self.update_display()
-            print("Grid Loaded!")
+            if success:
+                print("Grid Loaded!")
         elif event.key == 's':
             self.grid.save()
             print("Grid saved!")
