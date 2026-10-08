@@ -4,5 +4,6 @@
     "radius": 1,
     "width": 50,
     "height": 50,
-    "edge_wrap": true
+    "edge_wrap": true,
+    "delay": 0.1
 }

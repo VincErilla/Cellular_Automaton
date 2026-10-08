@@ -70,7 +70,7 @@ class CellGrid:
 def main():
     grid = CellGrid()
     display = DisplayGrid(grid)
-    display.control_main_loop(delay=0.1)
+    display.control_main_loop(delay=grid.rules["delay"])
 
 if __name__ == "__main__":
     main()
