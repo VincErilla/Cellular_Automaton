@@ -4,12 +4,13 @@ from display_grid import DisplayGrid
 from copy import deepcopy
 
 class CellGrid:
-    def __init__(self, rows, cols, edge_mode="dead"):
-        self.edge_mode = edge_mode
-        self.rows = rows
-        self.cols = cols
-        self.grid = [[0 for _ in range(cols)] for _ in range(rows)] #makes 0s grid
+    def __init__(self):
         self.rules = utils.loadRules()
+        self.edge_mode = "wrap" if self.rules["edge_wrap"] == True else "dead"
+        self.rows = self.rules["width"]
+        self.cols = self.rules["height"]
+        self.grid = [[0 for _ in range(self.cols)] for _ in range(self.rows)] #makes 0s grid
+
 
     def countNeighbors(self, grid, row, col): # edge_mode is used to handle cells outside grid
         live_neighbors = 0
@@ -67,11 +68,7 @@ class CellGrid:
 
 
 def main():
-    grid = CellGrid(50, 50, edge_mode="wrap")
-    #grid.printGrid()
-    #grid.nextGeneration()
-    #grid.printGrid()
-
+    grid = CellGrid()
     display = DisplayGrid(grid)
     display.control_main_loop(delay=0.1)
 
